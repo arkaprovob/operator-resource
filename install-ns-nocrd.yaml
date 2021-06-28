@@ -8,13 +8,11 @@ data:
   APP_LDAP_SEARCH_ROLE_ADMIN_ATTRVALUE: 'cn=spaship-admins,ou=adhoc,ou=managedGroups,dc=redhat,dc=com'
   APP_OPERATOR_WEBSITE_DOMAIN: apps.sandbox-m2.ll9k.p1.openshiftapps.com
   APP_LDAP_ENABLED: 'false'
-  #APP_LDAP_SEARCH_NAME: 'ou=users,dc=redhat,dc=com'
   APP_OPERATOR_CONTENT_ENVS: >-
     {"envs":{"prod":{"deployment":{"replicas":2,"httpd":{"resources":{"requests":{"cpu":"100m","memory":"150Mi"},"limits":{"cpu":"500m","memory":"250Mi"}}}}}}}
   #APP_LDAP_SEARCH_GROUPS_ATTRNAME: memberOf
   QUARKUS_OIDC_AUTH_SERVER_URL: 'http://keycloak:8180/auth/realms/spaship'
   APP_OPERATOR_IMAGE_API_NAME: images.paas.redhat.com/cpops/spaship-content-git-api
-  #APP_OPERATOR_URL: 'https://spaship-operator.apps.grey-spoke.dev.iad2.dc.paas.redhat.com'
   QUARKUS_OIDC_CLIENT_ID: spaship-manager
   APP_OPERATOR_IMAGE_INIT_NAME: images.paas.redhat.com/cpops/spaship-content-git-init
   APP_OPERATOR_ROUTER_MODE: openshift
