@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-configuration
+  labels:
+    app: keycloak
+data:
+  KEYCLOAK_IMPORT: '/usr/src/myapp/config/init-realm.json -Dkeycloak.profile.feature.upload_scripts=enabled'
+  KEYCLOAK_USER: admin
+  KEYCLOAK_PASSWORD: secret
+  connectTimeout: "600000"
+  remoteTimeout: "600000"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+        name: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/arbhatta/spaship-keycloak:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8443
+              name: https
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: keycloak-configuration
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-service
+  labels:
+    app: keycloak
+    name: keycloak
+spec:
+  type: LoadBalancer
+  selector:
+    app: keycloak
+    name: keycloak
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+    name: keycloak
+spec:
+  ports:
+    - name: keycloak
+      port: 8180
+      targetPort: 8080
+  clusterIP: None
+  selector:
+    app: keycloak
+    name: keycloak
